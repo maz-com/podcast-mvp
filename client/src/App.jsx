@@ -1,8 +1,9 @@
 import "./App.css";
+
 import { NavBar } from "./components/NavBar/NavBar";
 import { SearchPage } from "./pages/SearchPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
-import { RegisterLogin } from "./pages/RegisterLogin";
+import { MyAccount } from "./pages/MyAccount";
 import { Register } from "./components/MyAccount/Register";
 import { Login } from "./components/MyAccount/Login";
 
@@ -20,7 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<SearchPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
-        <Route path="/auth" element={<RegisterLogin />} />
+        <Route path="/auth" element={<MyAccount />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
       </Routes>

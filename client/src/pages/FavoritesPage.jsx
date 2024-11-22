@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FavoriteList } from "../components/FavoritePodcast/FavoriteList";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Button from "react-bootstrap/Button";
 
-export const FavoritesPage = () => {
+//import Col from "react-bootstrap/Col";
+
+export const FavoritesPage = ({ updateLoginState }) => {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -78,8 +84,41 @@ export const FavoritesPage = () => {
     }
   };
 
+  const handleLogout = () => {
+    updateLoginState();
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUserData(null);
+    handleLogout();
+  };
+
   return (
-    <div>
+    <Container>
+      <Row>
+        <h3>
+          My Profile{" "}
+          <Button variant="outline-secondary" onClick={logout}>
+            Log Out
+          </Button>
+        </h3>
+      </Row>
+      <Row>
+        {favorites.length > 0 ? (
+          <FavoriteList
+            favorites={favorites}
+            handleDeleteFavorites={handleDeleteFavorites}
+            handlePodcastRating={handlePodcastRating}
+          />
+        ) : (
+          <p>No favorites added</p>
+        )}
+      </Row>
+    </Container>
+  );
+  {
+    /* <div>
       {favorites.length > 0 ? (
         <FavoriteList
           favorites={favorites}
@@ -89,6 +128,6 @@ export const FavoritesPage = () => {
       ) : (
         <p>No favorites added</p>
       )}
-    </div>
-  );
+    </div> */
+  }
 };

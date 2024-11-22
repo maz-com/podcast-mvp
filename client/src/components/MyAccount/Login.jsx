@@ -1,18 +1,22 @@
 import { useState } from "react";
-import { Register } from "./Register";
+//import { Register } from "./Register";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export const Login = () => {
+export const Login = ({ updateLoginState }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   //call the useNavigate React hook to get the navigate function
   const navigate = useNavigate();
 
-  const login = async (event) => {
+  const handleLogin = () => {
+    updateLoginState();
+  };
+
+  const login = async (event, loggedIn) => {
     event.preventDefault();
 
     try {
@@ -33,10 +37,11 @@ export const Login = () => {
       console.log(data);
       //store it locally
       localStorage.setItem("token", data.token);
+      handleLogin();
       setUsername("");
       setPassword("");
       //navigate back to AdminView
-      navigate("/favorites");
+      //navigate("/favorites");
     } catch (error) {
       console.log(error);
     }

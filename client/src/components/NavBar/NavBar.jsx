@@ -23,11 +23,11 @@ export const NavBar = () => {
               <Nav.Link as={Link} to="/">
                 Search
               </Nav.Link>
-              <Nav.Link as={Link} to="/favorites">
+              {/* <Nav.Link as={Link} to="/favorites">
                 Favorites
-              </Nav.Link>
+              </Nav.Link> */}
               <Nav.Link as={Link} to="/auth">
-                My Account
+                My Podcasts
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
