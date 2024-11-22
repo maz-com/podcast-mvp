@@ -26,6 +26,9 @@ export const NavBar = () => {
               <Nav.Link as={Link} to="/favorites">
                 Favorites
               </Nav.Link>
+              <Nav.Link as={Link} to="/auth">
+                My Account
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

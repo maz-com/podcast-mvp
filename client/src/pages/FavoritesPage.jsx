@@ -87,7 +87,7 @@ export const FavoritesPage = () => {
           handlePodcastRating={handlePodcastRating}
         />
       ) : (
-        <p>No favorited added</p>
+        <p>No favorites added</p>
       )}
     </div>
   );
