@@ -3,6 +3,7 @@ var jwt = require("jsonwebtoken");
 const supersecret = process.env.SUPER_SECRET;
 
 function userShouldBeLoggedIn(req, res, next) {
+  //grab token from req header
   const token = req.headers["authorization"]?.replace(/^Bearer\s/, "");
 
   if (!token) {

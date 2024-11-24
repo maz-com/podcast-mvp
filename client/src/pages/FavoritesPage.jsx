@@ -4,32 +4,37 @@ import { FavoriteList } from "../components/FavoritePodcast/FavoriteList";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-
 //import Col from "react-bootstrap/Col";
 
-export const FavoritesPage = ({ updateLoginState }) => {
+export const FavoritesPage = ({ handleLogout, loggedIn, userData }) => {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        const response = await axios.get("http://localhost:4000/api/favorites");
+    if (userData) {
+      // Only fetch favorites if userData is available
+      fetchFavorites(userData);
+    }
+  }, [userData]); // Re-run the effect if `userData` changes
 
-        const { podcasts } = response.data;
+  const fetchFavorites = async (userData) => {
+    console.log("userData inside FavoritesPage: " + userData);
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/favorites/user/${userData.id}`
+      );
 
-        setFavorites(podcasts);
-      } catch (error) {
-        console.error("Could not fetch favorites:", error);
-        setError("Failed to load favorites. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFavorites();
-  }, []);
+      //const { podcasts } = response.data;
+
+      setFavorites(response.data);
+    } catch (error) {
+      console.error("Could not fetch favorites:", error);
+      setError("Failed to load favorites. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const postRating = async (id, rating) => {
     try {
@@ -46,7 +51,7 @@ export const FavoritesPage = ({ updateLoginState }) => {
   const handlePodcastRating = async (id, rating) => {
     try {
       const updatedPodcast = await postRating(id, rating);
-      //update  favorites podcast with  rating
+      //update favorites podcast with rating
       setFavorites((oldFavorites) =>
         oldFavorites.map((podcast) =>
           podcast.id === id ? { ...podcast, rating } : podcast
@@ -84,13 +89,8 @@ export const FavoritesPage = ({ updateLoginState }) => {
     }
   };
 
-  const handleLogout = () => {
-    updateLoginState();
-  };
-
   const logout = () => {
     localStorage.removeItem("token");
-    setUserData(null);
     handleLogout();
   };
 

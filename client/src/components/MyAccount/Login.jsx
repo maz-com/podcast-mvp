@@ -6,15 +6,15 @@ import Form from "react-bootstrap/Form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export const Login = ({ updateLoginState }) => {
+export const Login = ({ handleLogin, updateLoginState, loggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   //call the useNavigate React hook to get the navigate function
   const navigate = useNavigate();
 
-  const handleLogin = () => {
+  /* const handleLogin = () => {
     updateLoginState();
-  };
+  }; */
 
   const login = async (event, loggedIn) => {
     event.preventDefault();

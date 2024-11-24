@@ -6,6 +6,7 @@ const {
   getPodcasts,
   getPodcast,
   addRating,
+  getFavorites,
   deletePodcast,
 } = require("../controllers/favoriteController");
 
@@ -17,6 +18,8 @@ router.get("/", getPodcasts);
 router.get("/:id", getPodcast);
 //adds rating once it's been listened
 router.put("/:id/rating", addRating);
+//get all podcasts by user_id
+router.get("/user/:user_id", getFavorites);
 //deletes it
 router.delete("/:id", deletePodcast);
 

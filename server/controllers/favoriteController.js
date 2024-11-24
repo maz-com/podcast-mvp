@@ -106,6 +106,20 @@ const addRating = async (req, res) => {
   }
 };
 
+//get favorites by user_id
+const getFavorites = async (req, res) => {
+  //get user_id from request object
+  const { user_id } = req.params;
+
+  //make a database query to search for an item by id
+  const [result] = await pool.query(
+    "SELECT * FROM favorites WHERE user_id = ?",
+    [user_id]
+  );
+  //return result
+  res.status(200).send(result);
+};
+
 //delete podcast
 
 const deletePodcast = async (req, res) => {
@@ -135,5 +149,6 @@ module.exports = {
   getPodcasts,
   getPodcast,
   addRating,
+  getFavorites,
   deletePodcast,
 };

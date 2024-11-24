@@ -1,23 +1,27 @@
-// import Container from "react-bootstrap/Container";
-// import Button from "react-bootstrap/Button";
-// import Form from "react-bootstrap/Form";
-import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import { Login } from "../components/MyAccount/Login";
 import { FavoritesPage } from "../pages/FavoritesPage";
 
-export const MyAccount = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  console.log(loggedIn);
-
-  const updateLoginState = () => {
-    setLoggedIn(!loggedIn);
-  };
-
+export const MyAccount = ({
+  handleLogin,
+  handleLogout,
+  //updateLoginState,
+  //passLoginState,
+  loggedIn,
+  userData,
+}) => {
+  /* const updateLoginState = () => {
+    passLoginState();
+  }; */
   return (
     <div>
-      {!loggedIn && <Login updateLoginState={() => updateLoginState()} />}
+      {!loggedIn && <Login loggedIn={loggedIn} handleLogin={handleLogin} />}
       {loggedIn && (
-        <FavoritesPage updateLoginState={() => updateLoginState()} />
+        <FavoritesPage
+          userData={userData}
+          loggedIn={loggedIn}
+          handleLogout={() => handleLogout()}
+        />
       )}
     </div>
   );

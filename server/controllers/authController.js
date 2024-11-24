@@ -54,7 +54,7 @@ const login = async (req, res) => {
 
 const getProfile = async (req, res) => {
   const [results] = await pool.query(
-    `SELECT username FROM users WHERE id = ${req.user_id}`
+    `SELECT * FROM users WHERE id = ${req.user_id}`
   );
   res.send(results[0]);
 };
