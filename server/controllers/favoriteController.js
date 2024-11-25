@@ -4,12 +4,12 @@ const pool = require("../config/db");
 // Add podcast to fav list
 
 const addPodcast = async (req, res) => {
-  const { spotify_id, title, description, cover_image } = req.body;
+  const { spotify_id, title, description, cover_image, user_id } = req.body;
 
   try {
     const [podcast] = await pool.query(
-      "INSERT INTO favorites(spotify_id, title, description, cover_image) VALUES (?,?,?,?)",
-      [spotify_id, title, description, cover_image]
+      "INSERT INTO favorites(spotify_id, title, description, cover_image, user_id) VALUES (?,?,?,?,?)",
+      [spotify_id, title, description, cover_image, user_id]
     );
 
     return res.status(201).json({
@@ -18,6 +18,7 @@ const addPodcast = async (req, res) => {
         title,
         description,
         cover_image,
+        user_id,
       },
     });
   } catch (error) {
@@ -108,13 +109,18 @@ const addRating = async (req, res) => {
 
 //get favorites by user_id
 const getFavorites = async (req, res) => {
+  // the user id should come from the token
+  // decode the token - I can use the guard for that
+  // if ny getFavorites is being called after the guard, I can get the user id from req.user_id
+
   //get user_id from request object
-  const { user_id } = req.params;
+  //const { user_id } = req.params;
 
   //make a database query to search for an item by id
   const [result] = await pool.query(
-    "SELECT * FROM favorites WHERE user_id = ?",
-    [user_id]
+    /* "SELECT * FROM favorites WHERE user_id = ?" */ `SELECT * FROM favorites WHERE user_id = ?`,
+    [req.user_id] /* ,
+    [user_id] */
   );
   //return result
   res.status(200).send(result);

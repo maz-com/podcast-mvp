@@ -6,9 +6,11 @@ import { DisplayPodcast } from "../components/Podcast/DisplayPodcast";
 import axios from "axios";
 import "./SearchPage.css";
 
-export const SearchPage = () => {
+export const SearchPage = ({ userData }) => {
   const [podcasts, setPodcasts] = useState([]);
   const [selectedPodcast, setSelectedPodcast] = useState(null);
+  //const [currentUserId, setCurrentUserId] = useState(userData.id);
+  //console.log(userData.id);
 
   const handlePodcastClick = (podcast) => {
     // console.log("selected podcast:", podcast);
@@ -19,13 +21,18 @@ export const SearchPage = () => {
   //adds podcasts to database
 
   const addFavorites = async (podcast) => {
+    //console.log(userData);
     try {
-      const response = await axios.post("http://localhost:4000/api/favorites", {
-        spotify_id: podcast.id,
-        title: podcast.name,
-        description: podcast.description,
-        cover_image: podcast.images?.[0].url,
-      });
+      const response = await axios.post(
+        "http://localhost:4000/api/favorites",
+        {
+          spotify_id: podcast.id,
+          title: podcast.name,
+          description: podcast.description,
+          cover_image: podcast.images?.[0].url,
+        },
+        {}
+      );
 
       return response.data;
     } catch (error) {
@@ -40,6 +47,7 @@ export const SearchPage = () => {
   const handleAddFavorites = async (podcast) => {
     try {
       await addFavorites(podcast);
+      //console.log(userData);
       alert("Podcast has been added to favorites!");
     } catch (error) {
       alert("Could not add to favorites. Please try again");

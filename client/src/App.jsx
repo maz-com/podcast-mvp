@@ -11,7 +11,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("token"));
   console.log("logged in? " + loggedIn);
   const [userData, setUserData] = useState(null);
 
@@ -72,6 +72,7 @@ function App() {
               userData={userData}
               loggedIn={loggedIn}
               updateUserData={() => updateUserData()}
+              handleLogout={() => handleLogout()}
             />
           }
         />

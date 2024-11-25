@@ -12,17 +12,18 @@ export const FavoritesPage = ({ handleLogout, loggedIn, userData }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (userData) {
-      // Only fetch favorites if userData is available
-      fetchFavorites(userData);
-    }
-  }, [userData]); // Re-run the effect if `userData` changes
+    fetchFavorites();
+  }, []);
 
-  const fetchFavorites = async (userData) => {
-    console.log("userData inside FavoritesPage: " + userData);
+  const fetchFavorites = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/favorites/user/${userData.id}`
+        `http://localhost:4000/api/favorites/user`,
+        {
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
       );
 
       //const { podcasts } = response.data;
