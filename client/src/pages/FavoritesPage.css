@@ -1,0 +1,10 @@
+.logout-btn {
+  margin-left: 10px;
+  max-width: 100px;
+}
+
+.myprofile-banner {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}

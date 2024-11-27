@@ -6,35 +6,30 @@ import { DisplayPodcast } from "../components/Podcast/DisplayPodcast";
 import axios from "axios";
 import "./SearchPage.css";
 
-export const SearchPage = ({ userData }) => {
+export const SearchPage = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [selectedPodcast, setSelectedPodcast] = useState(null);
-  //const [currentUserId, setCurrentUserId] = useState(userData.id);
-  //console.log(userData.id);
 
   const handlePodcastClick = (podcast) => {
-    // console.log("selected podcast:", podcast);
-
     setSelectedPodcast(podcast);
   };
 
   //adds podcasts to database
-
   const addFavorites = async (podcast) => {
-    //console.log(userData);
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/favorites",
-        {
+      await axios("http://localhost:4000/api/favorites", {
+        method: "POST",
+        data: {
           spotify_id: podcast.id,
           title: podcast.name,
           description: podcast.description,
           cover_image: podcast.images?.[0].url,
         },
-        {}
-      );
-
-      return response.data;
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      //return response.data;
     } catch (error) {
       console.error("Could not add to favorites:", error);
       if (error.response) {
@@ -47,10 +42,9 @@ export const SearchPage = ({ userData }) => {
   const handleAddFavorites = async (podcast) => {
     try {
       await addFavorites(podcast);
-      //console.log(userData);
       alert("Podcast has been added to favorites!");
     } catch (error) {
-      alert("Could not add to favorites. Please try again");
+      alert("Please log in to your account to add a podcast to your favorites");
     }
   };
 

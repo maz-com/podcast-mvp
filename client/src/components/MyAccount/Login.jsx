@@ -1,22 +1,16 @@
 import { useState } from "react";
-//import { Register } from "./Register";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import "./Login.css";
 
-export const Login = ({ handleLogin, updateLoginState, loggedIn }) => {
+export const Login = ({ handleLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  //call the useNavigate React hook to get the navigate function
-  const navigate = useNavigate();
 
-  /* const handleLogin = () => {
-    updateLoginState();
-  }; */
-
-  const login = async (event, loggedIn) => {
+  const login = async (event) => {
     event.preventDefault();
 
     try {
@@ -40,15 +34,14 @@ export const Login = ({ handleLogin, updateLoginState, loggedIn }) => {
       handleLogin();
       setUsername("");
       setPassword("");
-      //navigate back to AdminView
-      //navigate("/favorites");
     } catch (error) {
+      alert("Log in failed. Please try again.");
       console.log(error);
     }
   };
 
   return (
-    <>
+    <div className="account-form-container">
       <Container className="large-margin">
         <Form>
           <Form.Text>
@@ -57,7 +50,6 @@ export const Login = ({ handleLogin, updateLoginState, loggedIn }) => {
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Username</Form.Label>
             <Form.Control
-              placeholder="Enter username"
               value={username}
               onChange={(event) => {
                 setUsername(event.target.value);
@@ -69,7 +61,6 @@ export const Login = ({ handleLogin, updateLoginState, loggedIn }) => {
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Enter password"
               value={password}
               onChange={(event) => {
                 setPassword(event.target.value);
@@ -81,11 +72,12 @@ export const Login = ({ handleLogin, updateLoginState, loggedIn }) => {
             Submit
           </Button>
         </Form>
-        <Form.Text>
+
+        <Form.Label className="register-login-text">
           {" "}
           No account? <Link to="/register">Register here</Link>
-        </Form.Text>
+        </Form.Label>
       </Container>
-    </>
+    </div>
   );
 };

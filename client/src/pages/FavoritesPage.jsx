@@ -4,9 +4,9 @@ import { FavoriteList } from "../components/FavoritePodcast/FavoriteList";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-//import Col from "react-bootstrap/Col";
+import "./FavoritesPage.css";
 
-export const FavoritesPage = ({ handleLogout, loggedIn, userData }) => {
+export const FavoritesPage = ({ handleLogout, userData }) => {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,6 +15,7 @@ export const FavoritesPage = ({ handleLogout, loggedIn, userData }) => {
     fetchFavorites();
   }, []);
 
+  //fetch favorites by user id using auth token
   const fetchFavorites = async () => {
     try {
       const response = await axios.get(
@@ -25,8 +26,6 @@ export const FavoritesPage = ({ handleLogout, loggedIn, userData }) => {
           },
         }
       );
-
-      //const { podcasts } = response.data;
 
       setFavorites(response.data);
     } catch (error) {
@@ -39,11 +38,13 @@ export const FavoritesPage = ({ handleLogout, loggedIn, userData }) => {
 
   const postRating = async (id, rating) => {
     try {
-      const response = await axios.put(
-        `http://localhost:4000/api/favorites/${id}/rating`,
-        { rating }
-      );
-      return response.data;
+      await axios(`http://localhost:4000/api/favorites/${id}/rating`, {
+        method: "PUT",
+        data: { rating },
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
     } catch (error) {
       console.error("Could not post rating:", error);
     }
@@ -98,13 +99,18 @@ export const FavoritesPage = ({ handleLogout, loggedIn, userData }) => {
   return (
     <Container>
       <Row>
-        <h3>
-          My Profile{" "}
-          <Button variant="outline-secondary" onClick={logout}>
+        <div className="myprofile-banner">
+          <h3>My Profile ({userData?.username})</h3>
+          <Button
+            variant="outline-secondary"
+            className="logout-btn"
+            onClick={logout}
+          >
             Log Out
           </Button>
-        </h3>
+        </div>
       </Row>
+
       <Row>
         {favorites.length > 0 ? (
           <FavoriteList
@@ -118,17 +124,4 @@ export const FavoritesPage = ({ handleLogout, loggedIn, userData }) => {
       </Row>
     </Container>
   );
-  {
-    /* <div>
-      {favorites.length > 0 ? (
-        <FavoriteList
-          favorites={favorites}
-          handleDeleteFavorites={handleDeleteFavorites}
-          handlePodcastRating={handlePodcastRating}
-        />
-      ) : (
-        <p>No favorites added</p>
-      )}
-    </div> */
-  }
 };

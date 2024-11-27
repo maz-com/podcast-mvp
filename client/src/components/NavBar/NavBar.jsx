@@ -3,7 +3,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 
-export const NavBar = () => {
+export const NavBar = ({ loggedIn }) => {
   return (
     <div>
       <Navbar
@@ -23,12 +23,15 @@ export const NavBar = () => {
               <Nav.Link as={Link} to="/">
                 Search
               </Nav.Link>
-              {/* <Nav.Link as={Link} to="/favorites">
-                Favorites
-              </Nav.Link> */}
-              <Nav.Link as={Link} to="/auth">
-                My Podcasts
-              </Nav.Link>
+              {loggedIn ? (
+                <Nav.Link as={Link} to="/auth">
+                  My Podcasts
+                </Nav.Link>
+              ) : (
+                <Nav.Link as={Link} to="/auth">
+                  Log in
+                </Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

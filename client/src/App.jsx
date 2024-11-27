@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import { NavBar } from "./components/NavBar/NavBar";
@@ -11,71 +10,33 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
+  //track if user is logged in or not
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("token"));
   console.log("logged in? " + loggedIn);
-  const [userData, setUserData] = useState(null);
 
-  const requestProfileData = async () => {
-    try {
-      const response = await axios("/api/auth/profile", {
-        headers: {
-          authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
-      console.log("response.data in function: " + response.data);
-      setUserData(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleLogin = () => {
+  const updateLoginState = () => {
     setLoggedIn(!loggedIn);
-    requestProfileData();
-  };
-
-  const handleLogout = () => {
-    setLoggedIn(!loggedIn);
-    setUserData(null);
   };
 
   return (
     <div>
-      <NavBar />
-      {/* <SearchPage />
-      <FavoritesPage /> */}
+      <NavBar loggedIn={loggedIn} />
       <Link to="/"></Link>
 
       <Routes>
-        <Route
-          path="/"
-          element={<SearchPage userData={userData} loggedIn={loggedIn} />}
-        />
+        <Route path="/" element={<SearchPage />} />
 
         <Route
           path="/auth"
           element={
             <MyAccount
-              userData={userData}
               loggedIn={loggedIn}
-              handleLogout={() => handleLogout()}
-              handleLogin={() => handleLogin()}
-              updateUserData={() => requestProfileData()}
+              updateLoginState={() => updateLoginState()}
             />
           }
         />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/favorites"
-          element={
-            <FavoritesPage
-              userData={userData}
-              loggedIn={loggedIn}
-              updateUserData={() => updateUserData()}
-              handleLogout={() => handleLogout()}
-            />
-          }
-        />
+        <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/register" element={<Register />} />
       </Routes>
     </div>
