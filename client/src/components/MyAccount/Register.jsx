@@ -8,31 +8,53 @@ import axios from "axios";
 export const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [allUsers, setAllUsers] = useState([]);
 
   const registerUser = async (event) => {
     event.preventDefault();
 
+    //check username is not already in use
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/auth/register",
-        {
-          username: username,
-          password: password,
-        },
-        {
-          headers: {
-            // If sending data in the body, must send header to say what type of data we are sending
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      setUsername("");
-      setPassword("");
-      alert("New user has been registered!");
+      let response = await axios.get("http://localhost:4000/api/auth/users");
+      setAllUsers(response.data);
     } catch (error) {
-      console.error("User could not be added:", error);
-      alert("Registration failed. Please try again.");
+      // handle errors
+      console.error(error);
+    }
+
+    var allUsernames = allUsers.map(function (user) {
+      return user["username"];
+    });
+
+    console.log(allUsernames);
+
+    if (allUsernames.includes(username)) {
+      alert("This username already exists. Please choose a different one.");
+    } else if (!username || !password) {
+      alert("Please choose a username and a password");
+    } else {
+      try {
+        const response = await axios.post(
+          "http://localhost:4000/api/auth/register",
+          {
+            username: username,
+            password: password,
+          },
+          {
+            headers: {
+              // If sending data in the body, must send header to say what type of data we are sending
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        setUsername("");
+        setPassword("");
+        alert("New user has been registered!");
+      } catch (error) {
+        console.error("User could not be added:", error);
+        alert("Registration failed. Please try again.");
+      }
     }
   };
 

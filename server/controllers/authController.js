@@ -7,7 +7,7 @@ const saltRounds = 10;
 
 const supersecret = process.env.SUPER_SECRET;
 
-// example controller function
+// controller to register user
 const register = async (req, res) => {
   const { username, password } = req.body;
 
@@ -24,6 +24,7 @@ const register = async (req, res) => {
   }
 };
 
+//controller to login user
 const login = async (req, res) => {
   const { username, password } = req.body;
 
@@ -52,6 +53,7 @@ const login = async (req, res) => {
   }
 };
 
+//controller to get profile data
 const getProfile = async (req, res) => {
   const [results] = await pool.query(
     `SELECT * FROM users WHERE id = ${req.user_id}`
@@ -59,8 +61,15 @@ const getProfile = async (req, res) => {
   res.send(results[0]);
 };
 
+//controller to retrieve all users
+const getAllUsers = async (req, res) => {
+  const [result] = await pool.query(`SELECT username FROM users`);
+  res.status(200).send(result);
+};
+
 module.exports = {
   register,
   login,
   getProfile,
+  getAllUsers,
 };

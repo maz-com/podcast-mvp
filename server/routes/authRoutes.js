@@ -10,4 +10,6 @@ router.post("/login", authController.login);
 
 router.get("/profile", userShouldBeLoggedIn, authController.getProfile);
 
+router.get("/users", authController.getAllUsers);
+
 module.exports = router;
