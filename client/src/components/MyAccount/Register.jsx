@@ -28,7 +28,7 @@ export const Register = () => {
 
     console.log(allUsernames);
 
-    if (allUsernames.includes(username)) {
+    if (username && password && allUsernames.includes(username)) {
       alert("This username already exists. Please choose a different one.");
     } else if (!username || !password) {
       alert("Please choose a username and a password");
