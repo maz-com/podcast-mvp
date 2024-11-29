@@ -14,6 +14,7 @@ export const Register = () => {
     event.preventDefault();
 
     //check username is not already in use
+    //fetch all user data
     try {
       let response = await axios.get("http://localhost:4000/api/auth/users");
       setAllUsers(response.data);
@@ -21,13 +22,11 @@ export const Register = () => {
       // handle errors
       console.error(error);
     }
-
+    //convert allUsers to object array to string array with usernames only
     var allUsernames = allUsers.map(function (user) {
       return user["username"];
     });
-
-    console.log(allUsernames);
-
+    //registration control
     if (username && password && allUsernames.includes(username)) {
       alert("This username already exists. Please choose a different one.");
     } else if (!username || !password) {
